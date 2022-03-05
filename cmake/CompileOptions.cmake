@@ -8,6 +8,7 @@ function(set_compile_options target_name)
   set_target_properties(
     ${target_name}
     PROPERTIES
+      LINKER_LANGUAGE CXX
       CXX_STANDARD 17
       CXX_STANDARD_REQUIRED ON
       CXX_EXTENSIONS OFF
