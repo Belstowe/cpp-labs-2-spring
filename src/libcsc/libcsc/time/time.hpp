@@ -1,36 +1,44 @@
 #pragma once
 
+#include <algorithm>
 #include <iomanip>
 #include <iostream>
 
 namespace libcsc::time {
 class TimeBase {
 protected:
-    long sec;
+    unsigned long sec;
 
 public:
-    TimeBase(const long& sec = 0) : sec{sec}
+    TimeBase(const unsigned long& sec = 0) : sec{sec}
     {
     }
 
-    virtual ~TimeBase() = 0;
+    virtual ~TimeBase() = default;
 
-    operator long() const
+    operator unsigned long() const
     {
         return sec;
     }
 
     friend std::ostream& operator<<(std::ostream& os, const TimeBase& time)
     {
-        os << std::setfill('0') << std::setw(2) << ((time / 60) / 60) / 24 << "d " << ((time / 60) / 60) / 24 << "h " << ((time / 60) / 60) / 24 << "m "
-           << ((time / 60) / 60) / 24 << "s";
+        os << std::setfill('0') << std::setw(2) << ((time / 60) / 60) / 24 << "d ";
+        os << std::setfill('0') << std::setw(2) << ((time / 60) / 60) % 24 << "h ";
+        os << std::setfill('0') << std::setw(2) << (time / 60) % 60 << "m ";
+        os << std::setfill('0') << std::setw(2) << time % 60 << "s";
         return os;
     }
 };
 
 class TimeSpan : public TimeBase {
 public:
-    TimeSpan(const long& sec = 0) : TimeBase{sec}
+    TimeSpan(const unsigned long& sec = 0) : TimeBase{sec}
+    {
+    }
+
+    TimeSpan(const unsigned long& days, const unsigned long& hours, const unsigned long& minutes, const unsigned long& seconds)
+        : TimeBase{((days * 24 + hours) * 60 + minutes) * 60 + seconds}
     {
     }
 
@@ -63,16 +71,11 @@ public:
 
 class Time : public TimeBase {
 public:
-    Time(const long& sec = 0) : TimeBase{sec}
+    Time(const unsigned long& sec = 0) : TimeBase{sec}
     {
     }
 
     ~Time() = default;
-
-    friend TimeSpan operator-(Time lhs, const Time& rhs)
-    {
-        return TimeSpan(lhs - rhs);
-    }
 
     Time& operator+=(const TimeSpan& rhs)
     {
@@ -88,7 +91,7 @@ public:
 
     Time& operator-=(const TimeSpan& rhs)
     {
-        sec -= rhs;
+        sec -= std::min((unsigned long)(rhs), sec);
         return *this;
     }
 
@@ -99,25 +102,32 @@ public:
     }
 };
 
+TimeSpan operator-(const Time& lhs, const Time& rhs)
+{
+    const unsigned long& lhs_secs = lhs;
+    const unsigned long& rhs_secs = rhs;
+    return TimeSpan((lhs_secs < rhs_secs) ? (rhs_secs - lhs_secs) : (lhs_secs - rhs_secs));
+}
+
 inline namespace literals {
-TimeSpan operator"" _d(unsigned long long time)
+TimeSpan operator"" _d(unsigned long long sec)
 {
-    return TimeSpan(((time / 60) / 60) / 24);
+    return TimeSpan(sec * 60 * 60 * 24);
 }
 
-TimeSpan operator"" _h(unsigned long long time)
+TimeSpan operator"" _h(unsigned long long sec)
 {
-    return TimeSpan(((time / 60) / 60) % 24);
+    return TimeSpan(sec * 60 * 60);
 }
 
-TimeSpan operator"" _m(unsigned long long time)
+TimeSpan operator"" _m(unsigned long long sec)
 {
-    return TimeSpan((time / 60) % 60);
+    return TimeSpan(sec * 60);
 }
 
-TimeSpan operator"" _s(unsigned long long time)
+TimeSpan operator"" _s(unsigned long long sec)
 {
-    return TimeSpan(time % 60);
+    return TimeSpan(sec);
 }
 };
 }
