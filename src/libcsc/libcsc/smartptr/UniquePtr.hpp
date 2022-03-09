@@ -37,8 +37,8 @@ public:
             delete ptr;
         }
 
-        ptr = moved.ptr;
-        moved.ptr = nullptr;
+        ptr = obj.ptr;
+        obj.ptr = nullptr;
         return *this;
     }
 
