@@ -15,3 +15,14 @@ test/libcsc
 `-- libcsc
     `-- time.cpp
 ```
+
+# 2. Умные указатели
+
+Структура:
+```
+src/libcsc/libcsc/smartptr
+|-- SharedPtr.hpp
+`-- UniquePtr.hpp
+test/libcsc/libcsc
+`-- smartptr.cpp
+```
