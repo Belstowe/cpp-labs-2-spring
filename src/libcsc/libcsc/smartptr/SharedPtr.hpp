@@ -70,8 +70,8 @@ public:
 
         dereference();
 
-        ptr = copied.ptr;
-        count = copied.count;
+        ptr = moved.ptr;
+        count = moved.count;
         moved.ptr = nullptr;
         moved.count = nullptr;
         return *this;
