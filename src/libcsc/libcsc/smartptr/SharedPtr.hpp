@@ -1,5 +1,9 @@
 #pragma once
 
+#include <cstddef>
+
+using std::size_t;
+
 namespace libcsc::smartptr {
 template <typename T>
 class SharedPtr {
@@ -104,7 +108,7 @@ public:
         }
     }
 
-    std::size_t use_count() const
+    size_t use_count() const
     {
         return (count == nullptr) ? 0 : *count;
     }
