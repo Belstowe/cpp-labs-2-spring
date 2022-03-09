@@ -7,16 +7,16 @@
 namespace libcsc::time {
 class TimeBase {
 protected:
-    unsigned long sec;
+    unsigned long long sec;
 
 public:
-    TimeBase(const unsigned long& sec = 0) : sec{sec}
+    TimeBase(const unsigned long long& sec = 0) : sec{sec}
     {
     }
 
     virtual ~TimeBase() = default;
 
-    operator unsigned long() const
+    operator unsigned long long() const
     {
         return sec;
     }
@@ -33,11 +33,11 @@ public:
 
 class TimeSpan : public TimeBase {
 public:
-    TimeSpan(const unsigned long& sec = 0) : TimeBase{sec}
+    TimeSpan(const unsigned long long& sec = 0) : TimeBase{sec}
     {
     }
 
-    TimeSpan(const unsigned long& days, const unsigned long& hours, const unsigned long& minutes, const unsigned long& seconds)
+    TimeSpan(const unsigned long long& days, const unsigned long long& hours, const unsigned long long& minutes, const unsigned long long& seconds)
         : TimeBase{((days * 24 + hours) * 60 + minutes) * 60 + seconds}
     {
     }
@@ -71,7 +71,7 @@ public:
 
 class Time : public TimeBase {
 public:
-    Time(const unsigned long& sec = 0) : TimeBase{sec}
+    Time(const unsigned long long& sec = 0) : TimeBase{sec}
     {
     }
 
@@ -91,7 +91,7 @@ public:
 
     Time& operator-=(const TimeSpan& rhs)
     {
-        sec -= std::min((unsigned long)(rhs), sec);
+        sec -= std::min((unsigned long long)(rhs), sec);
         return *this;
     }
 
@@ -104,8 +104,8 @@ public:
 
 TimeSpan operator-(const Time& lhs, const Time& rhs)
 {
-    const unsigned long& lhs_secs = lhs;
-    const unsigned long& rhs_secs = rhs;
+    const unsigned long long& lhs_secs = lhs;
+    const unsigned long long& rhs_secs = rhs;
     return TimeSpan((lhs_secs < rhs_secs) ? (rhs_secs - lhs_secs) : (lhs_secs - rhs_secs));
 }
 
