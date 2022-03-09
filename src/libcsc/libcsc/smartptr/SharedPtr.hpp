@@ -20,26 +20,22 @@ private:
     }
 
 public:
-    SharedPtr()
-    : ptr{nullptr}, count{nullptr}
+    SharedPtr() : ptr{nullptr}, count{nullptr}
     {
     }
 
-    SharedPtr(T* const ptr)
-    : ptr{ptr}, count{new size_t(1)}
+    SharedPtr(T* const ptr) : ptr{ptr}, count{new size_t(1)}
     {
     }
 
-    SharedPtr(const SharedPtr& copied)
-    : ptr{copied.ptr}, count{copied.count}
+    SharedPtr(const SharedPtr& copied) : ptr{copied.ptr}, count{copied.count}
     {
         if (count != nullptr) {
             (*count)++;
         }
     }
 
-    SharedPtr(SharedPtr&& moved)
-    : ptr{moved.ptr}, count{moved.count}
+    SharedPtr(SharedPtr&& moved) : ptr{moved.ptr}, count{moved.count}
     {
         moved.ptr = nullptr;
         moved.count = nullptr;
@@ -103,8 +99,7 @@ public:
         ptr = p;
         if (p != nullptr) {
             count = new size_t(1);
-        }
-        else {
+        } else {
             count = nullptr;
         }
     }

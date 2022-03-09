@@ -28,17 +28,17 @@ public:
 
     UniquePtr operator=(const UniquePtr&) = delete;
 
-    UniquePtr& operator=(UniquePtr&& obj)
+    UniquePtr& operator=(UniquePtr&& moved)
     {
-        if (this == &obj) {
+        if (this == &moved) {
             return *this;
         }
         if (ptr != nullptr) {
             delete ptr;
         }
 
-        ptr = obj.ptr;
-        obj.ptr = nullptr;
+        ptr = moved.ptr;
+        moved.ptr = nullptr;
         return *this;
     }
 
