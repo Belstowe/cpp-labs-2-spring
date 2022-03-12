@@ -33,6 +33,9 @@ test/libcsc/libcsc
 
 ## Контейнеры и алгоритмы STL
 
+* ~~Реализация метода `soundex_hash`;~~
+* Обработка файла CSV *(в прогрессе)*.
+
 Структура:
 ```
 src/libcsc/libcsc/soundex
