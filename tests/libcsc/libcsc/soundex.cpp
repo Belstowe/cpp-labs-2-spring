@@ -14,23 +14,17 @@ TEST(Soundex, CorrectHash)
 
 TEST(Soundex, IncorrectHash)
 {
-    try
-    {
+    try {
         soundex_hash("");
         FAIL();
-    }
-    catch (const std::runtime_error& e)
-    {
+    } catch (const std::runtime_error& e) {
         EXPECT_STREQ("Empty string given to soundex_hash", e.what());
     }
 
-    try
-    {
+    try {
         soundex_hash("Invalid$Character");
         FAIL();
-    }
-    catch (const std::runtime_error& e)
-    {
+    } catch (const std::runtime_error& e) {
         EXPECT_STREQ("String 'Invalid$Character' includes a character which is neither a letter nor a digit", e.what());
     }
 }

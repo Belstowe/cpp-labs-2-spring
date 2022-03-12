@@ -7,12 +7,12 @@
 #include <unordered_map>
 
 namespace libcsc::soundex {
-inline uint32_t string_to_hash(const std::string& str)
+uint32_t string_to_hash(const std::string& str)
 {
     return std::accumulate(str.begin(), str.begin() + 4, 0, [](uint32_t hash, const char& c) { return (hash << 8) + c; });
 }
 
-inline std::string hash_to_string(const uint32_t& hash)
+std::string hash_to_string(const uint32_t& hash)
 {
     return std::string(reinterpret_cast<const char*>(&hash));
 }
