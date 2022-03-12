@@ -6,6 +6,7 @@
 #include "rapidcsv.h"
 
 #include <algorithm>
+#include <forward_list>
 #include <fstream>
 #include <iostream>
 #include <map>
@@ -53,6 +54,10 @@ int main(int argc, char* argv[])
         std::for_each(names.begin(), names.end(), [&hash_map](const std::string& name) { hash_map[hash_to_string(soundex_hash(name))].push_back(name); });
     } catch (const std::runtime_error& e) {
         std::clog << e.what();
+    }
+
+    for (auto& [key, name_list] : hash_map) {
+        std::sort(name_list.begin(), name_list.end());
     }
 
     nlohmann::json j(hash_map);

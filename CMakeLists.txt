@@ -30,4 +30,3 @@ add_subdirectory(src)
 if (GTEST_BUILD)
 	add_subdirectory(tests)
 endif()
-
