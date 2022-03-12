@@ -6,7 +6,6 @@
 #include "rapidcsv.h"
 
 #include <algorithm>
-#include <forward_list>
 #include <fstream>
 #include <iostream>
 #include <map>
