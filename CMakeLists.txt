@@ -8,9 +8,12 @@ if(${CMAKE_VERSION} VERSION_LESS 3.14)
 	include(${CMAKE_MODULE_PATH}/add_FetchContent_MakeAvailable.cmake)
 endif()
 
+include(CMakePrintHelpers)
+
+
 project(
 	csc
-	VERSION 0.1
+	VERSION 0.3
 	LANGUAGES CXX)
 
 option(GTEST_BUILD "Build GoogleTest" ON)
@@ -21,8 +24,10 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin/)
 
 include_directories(src)
 
+add_subdirectory(extras)
+
 add_subdirectory(src)
 if (GTEST_BUILD)
 	add_subdirectory(tests)
 endif()
-add_subdirectory(extras)
+

@@ -41,6 +41,8 @@ test/libcsc/libcsc
 src/libcsc/libcsc/soundex
 |-- soundex.cpp
 `-- soundex.hpp
+src/soundex_groupby/soundex_groupby
+`-- main.cpp
 test/libcsc/libcsc
 `-- soundex.cpp
 ```
