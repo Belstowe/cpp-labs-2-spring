@@ -9,4 +9,4 @@ set_compile_options(soundex_groupby)
 target_include_directories(soundex_groupby PRIVATE ./)
 target_link_libraries(soundex_groupby PRIVATE libcsc CLI11 rapidcsv nlohmann_json::nlohmann_json)
 
-configure_file("${CMAKE_SOURCE_DIR}/assets/names2020.csv" "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/" COPYONLY)
+configure_file("${CMAKE_SOURCE_DIR}/assets/names2020.csv" "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/names2020.csv" COPYONLY)
