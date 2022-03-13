@@ -4,19 +4,16 @@
 #include <memory>
 
 namespace libcsc::forward_list {
-template <typename T, bool IsConst>
+template <typename T>
 struct ForwardIterator;
 
-template <typename T, bool IsConst = true>
+template <typename T>
 class ForwardList {
-    template <typename T, bool IsConst>
+    template <typename T>
     friend struct ForwardIterator;
 
 public:
-    typedef ForwardIterator<T, false> iterator;
-    typedef ForwardIterator<T, true> const_iterator;
-
-    using value_type = std::conditional_t<IsConst, const ForwardList<T, true>, ForwardList<T, false>>;
+    typedef ForwardIterator<T> iterator;
 
     ForwardList() : data{nullptr}, next{nullptr}
     {
@@ -30,7 +27,7 @@ public:
     {
     }
 
-    void chain(const ForwardList& node)
+    void chain(ForwardList& node)
     {
         if (next != nullptr) {
             delete next;
@@ -49,17 +46,7 @@ public:
         return (next == nullptr) ? iterator(this) : next->end();
     }
 
-    const_iterator begin() const
-    {
-        return const_iterator(this);
-    }
-
-    const_iterator end() const
-    {
-        return (next == nullptr) ? const_iterator(this) : next->end();
-    }
-
-    std::size_t size() const
+    std::size_t size()
     {
         return std::distance(begin(), end());
     }
@@ -68,7 +55,7 @@ private:
     ForwardList(const T* begin, const T* end)
     {
         if (begin != end) {
-            next = new value_type(std::next(begin), end);
+            next = new ForwardList<T>(std::next(begin), end);
             data = std::make_unique<T>(*begin);
         } else {
             next = nullptr;
@@ -77,6 +64,6 @@ private:
     }
 
     std::unique_ptr<T> data;
-    value_type* next;
+    ForwardList<T>* next;
 };
 }

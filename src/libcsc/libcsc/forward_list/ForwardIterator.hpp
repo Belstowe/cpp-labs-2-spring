@@ -5,17 +5,16 @@
 #include <iterator>
 
 namespace libcsc::forward_list {
-template <typename T, bool IsConst>
-struct ForwardIterator
-{
-    template <typename T, bool IsConst>
+template <typename T>
+struct ForwardIterator {
+    template <typename T>
     friend class ForwardList;
 
     using iterator_category = std::input_iterator_tag;
-    using difference_type   = std::ptrdiff_t;
-    using value_type        = T;
-    using pointer           = std::conditional_t<IsConst, const ForwardList<value_type, true>*, ForwardList<value_type, false>*>;
-    using reference         = std::conditional_t<IsConst, const value_type&, value_type&>;
+    using difference_type = std::ptrdiff_t;
+    using value_type = T;
+    using pointer = ForwardList<value_type>*;
+    using reference = value_type&;
 
     ForwardIterator(const ForwardIterator& it) : p{it.p}
     {
@@ -56,7 +55,8 @@ struct ForwardIterator
 
 private:
     ForwardIterator(pointer p) : p{p}
-    {}
+    {
+    }
 
     pointer p;
 };

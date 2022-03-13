@@ -9,7 +9,7 @@
 1. [Перегрузка операторов](#перегрузка-операторов) *([исходники](./src/libcsc/libcsc/time), [тесты](./tests/libcsc/libcsc/time.cpp))*
 2. [Умные указатели](#умные-указатели) *([исходники](./src/libcsc/libcsc/smartptr), [тесты](./tests/libcsc/libcsc/smartptr.cpp))*
 3. [Контейнеры и алгоритмы STL](#контейнеры-и-алгоритмы-stl) *([исходники](./src/libcsc/libcsc/soundex), [тесты](./tests/libcsc/libcsc/soundex.cpp), [утилита](./src/soundex_groupby/soundex_groupby/main.cpp))*
-4. [Итераторы](#итераторы) *(в прогрессе)*
+4. [Итераторы](#итераторы) *([исходники](./src/libcsc/libcsc/forward_list), [тесты](./tests/libcsc/libcsc/forward_list.cpp))*
 
 ## Перегрузка операторов
 
@@ -70,4 +70,6 @@ build/bin
 src/libcsc/libcsc/forward_list
 |-- ForwardIterator.hpp
 `-- ForwardList.hpp
+tests/libcsc/libcsc
+`-- forward_list.cpp
 ```
