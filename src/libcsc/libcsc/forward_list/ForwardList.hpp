@@ -7,23 +7,23 @@ namespace libcsc::forward_list {
 template <typename T>
 struct ForwardIterator;
 
-template <typename T>
+template <typename TypeName>
 class ForwardList {
     template <typename T>
     friend struct ForwardIterator;
 
 public:
-    typedef ForwardIterator<T> iterator;
+    typedef ForwardIterator<TypeName> iterator;
 
     ForwardList() : data{nullptr}, next{nullptr}
     {
     }
 
-    ForwardList(T data) : data{std::make_unique<T>(data)}, next{new ForwardList<T>()}
+    ForwardList(TypeName data) : data{std::make_unique<TypeName>(data)}, next{new ForwardList<TypeName>()}
     {
     }
 
-    ForwardList(std::initializer_list<T> val_list) : ForwardList(val_list.begin(), val_list.end())
+    ForwardList(std::initializer_list<TypeName> val_list) : ForwardList(val_list.begin(), val_list.end())
     {
     }
 
@@ -52,18 +52,18 @@ public:
     }
 
 private:
-    ForwardList(const T* begin, const T* end)
+    ForwardList(const TypeName* begin, const TypeName* end)
     {
         if (begin != end) {
-            next = new ForwardList<T>(std::next(begin), end);
-            data = std::make_unique<T>(*begin);
+            next = new ForwardList<TypeName>(std::next(begin), end);
+            data = std::make_unique<TypeName>(*begin);
         } else {
             next = nullptr;
             data = nullptr;
         }
     }
 
-    std::unique_ptr<T> data;
-    ForwardList<T>* next;
+    std::unique_ptr<TypeName> data;
+    ForwardList<TypeName>* next;
 };
 }
