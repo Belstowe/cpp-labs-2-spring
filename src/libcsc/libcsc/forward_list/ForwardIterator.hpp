@@ -4,44 +4,60 @@
 
 #include <iterator>
 
-namespace libcsc::forward_list
+namespace libcsc::forward_list {
+template <typename T, bool IsConst>
+struct ForwardIterator
 {
-    template<typename T>
-    class ForwardIterator : public std::iterator<std::input_iterator_tag, T>
+    template <typename T, bool IsConst>
+    friend class ForwardList;
+
+    using iterator_category = std::input_iterator_tag;
+    using difference_type   = std::ptrdiff_t;
+    using value_type        = T;
+    using pointer           = std::conditional_t<IsConst, const ForwardList<value_type, true>*, ForwardList<value_type, false>*>;
+    using reference         = std::conditional_t<IsConst, const value_type&, value_type&>;
+
+    ForwardIterator(const ForwardIterator& it) : p{it.p}
     {
-        friend class ForwardList;
+    }
 
-        private:
-            ForwardIterator(ForwardList<T>* p)
-                : p{p}
-            {}
+    friend bool operator!=(const ForwardIterator& lhs, const ForwardIterator& rhs)
+    {
+        return lhs.p != rhs.p;
+    }
 
-            ForwardList<T>* p;
+    friend bool operator==(const ForwardIterator& lhs, const ForwardIterator& rhs)
+    {
+        return lhs.p == rhs.p;
+    }
 
-        public:
-            ForwardIterator(const ForwardIterator& it)
-                : p{it.p}
-            {}
+    reference operator*() const
+    {
+        return *(p->data);
+    }
 
-            bool operator!=(ForwardIterator const& other) const
-            {
-                return p != other.p;
-            }
+    pointer operator->()
+    {
+        return p;
+    }
 
-            bool operator==(ForwardIterator const& other) const
-            {
-                return p == other.p;
-            }
+    ForwardIterator& operator++()
+    {
+        p = p->next;
+        return *this;
+    }
 
-            T ForwardIterator::reference operator*() const
-            {
-                return *(p->data);
-            }
+    ForwardIterator operator++(T)
+    {
+        auto tmp = *this;
+        ++(*this);
+        return tmp;
+    }
 
-            OwnIterator& operator++()
-            {
-                p = p->next;
-                return *this;
-            }
-    };
+private:
+    ForwardIterator(pointer p) : p{p}
+    {}
+
+    pointer p;
+};
 }
