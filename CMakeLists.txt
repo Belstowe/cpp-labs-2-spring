@@ -13,7 +13,7 @@ include(CMakePrintHelpers)
 
 project(
 	csc
-	VERSION 0.3
+	VERSION 0.4
 	LANGUAGES CXX)
 
 option(GTEST_BUILD "Build GoogleTest" ON)
