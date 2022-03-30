@@ -1,7 +1,6 @@
 FetchContent_Declare(
 	json
-	GIT_REPOSITORY	https://github.com/nlohmann/json.git
-	GIT_TAG		v3.10.5
+	URL    https://github.com/nlohmann/json/releases/download/v3.10.5/json.tar.xz
 )
 
 FetchContent_MakeAvailable(json)
