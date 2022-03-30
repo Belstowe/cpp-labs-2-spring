@@ -16,9 +16,7 @@ private:
         if (count != nullptr) {
             if (--(*count) == 0) {
                 delete count;
-                if (ptr != nullptr) {
-                    delete ptr;
-                }
+                delete ptr;
             }
         }
     }

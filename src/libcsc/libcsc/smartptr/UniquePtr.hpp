@@ -21,9 +21,7 @@ public:
 
     ~UniquePtr()
     {
-        if (ptr != nullptr) {
-            delete ptr;
-        }
+        delete ptr;
     }
 
     UniquePtr operator=(const UniquePtr&) = delete;
