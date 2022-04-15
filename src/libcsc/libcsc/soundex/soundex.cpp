@@ -56,13 +56,14 @@ uint32_t soundex_hash(const std::string_view str)
     if (str.empty()) {
         throw std::runtime_error("Empty string given to soundex_hash");
     }
-    std::for_each(str.begin(), str.end(), [str](const char c) {
-        if (!isdigit(static_cast<int>(c)) && !isalpha(static_cast<int>(c))) {
-            throw std::runtime_error(
-                    std::string() + "String '" + str.data()
-                    + "' includes a character which is neither a letter nor a digit");
-        }
-    });
+
+    if (!std::all_of(str.cbegin(), str.cend(), [](const char c) {
+            return isdigit(static_cast<int>(c)) || isalpha(static_cast<int>(c));
+        })) {
+        throw std::runtime_error(
+                std::string() + "String '" + str.data()
+                + "' includes a character which is neither a letter nor a digit");
+    }
 
     std::string hashbase(str);
     std::transform(hashbase.begin(), hashbase.end(), hashbase.begin(), [](const char c) -> char {
