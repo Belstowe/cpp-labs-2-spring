@@ -9,12 +9,13 @@
 namespace libcsc::soundex {
 uint32_t string_to_hash(const std::string& str)
 {
-    return std::accumulate(str.rbegin(), str.rend(), 0, [](uint32_t hash, const char c) { return (hash << 8) + c; });
+    return std::accumulate(str.begin(), str.end(), 0, [](uint32_t hash, const char c) { return (hash << 8) + c; });
 }
 
 std::string hash_to_string(const uint32_t hash)
 {
-    return std::string(reinterpret_cast<const char*>(&hash), 4);
+    std::string result(reinterpret_cast<const char*>(&hash), 4);
+    return {result.rbegin(), result.rend()};
 }
 
 void delete_chars(
