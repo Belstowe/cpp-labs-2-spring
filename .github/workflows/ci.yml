@@ -71,7 +71,7 @@ jobs:
         run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=$BUILD_TYPE -GNinja
 
       # Exports CC and CXX to tell CMake which compiler to use; runs CMake
-      - name: Build CMake with GCC
+      - name: Build CMake
         working-directory: ${{runner.workspace}}/build_test
         shell: bash
         run: cmake --build . --config $BUILD_TYPE
