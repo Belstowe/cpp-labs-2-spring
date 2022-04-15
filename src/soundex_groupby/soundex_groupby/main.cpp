@@ -46,11 +46,14 @@ int main(int argc, char* argv[])
 
     std::vector<std::string> names = doc.GetColumn<std::string>(0);
 
-    auto HashCompare = [](const std::string& lhs, const std::string& rhs) { return string_to_hash(lhs) < string_to_hash(rhs); };
+    auto HashCompare
+            = [](const std::string& lhs, const std::string& rhs) { return string_to_hash(lhs) < string_to_hash(rhs); };
     std::map<std::string, std::vector<std::string>, decltype(HashCompare)> hash_map(HashCompare);
 
     try {
-        std::for_each(names.begin(), names.end(), [&hash_map](const std::string& name) { hash_map[hash_to_string(soundex_hash(name))].push_back(name); });
+        std::for_each(names.begin(), names.end(), [&hash_map](const std::string& name) {
+            hash_map[hash_to_string(soundex_hash(name))].push_back(name);
+        });
     } catch (const std::runtime_error& e) {
         std::clog << e.what();
     }

@@ -34,7 +34,11 @@ public:
     {
     }
 
-    TimeSpan(const unsigned long long days, const unsigned long long hours, const unsigned long long minutes, const unsigned long long seconds)
+    TimeSpan(
+            const unsigned long long days,
+            const unsigned long long hours,
+            const unsigned long long minutes,
+            const unsigned long long seconds)
         : TimeBase{((days * 24 + hours) * 60 + minutes) * 60 + seconds}
     {
     }
