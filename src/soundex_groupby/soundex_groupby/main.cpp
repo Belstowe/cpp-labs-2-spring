@@ -16,6 +16,28 @@ using libcsc::soundex::hash_to_string;
 using libcsc::soundex::soundex_hash;
 using libcsc::soundex::string_to_hash;
 
+namespace {
+class soundex_map : public std::map<uint32_t, std::vector<std::string_view>> {
+public:
+    std::vector<std::string_view>& operator[](const std::string& key)
+    {
+        return std::map<uint32_t, std::vector<std::string_view>>::operator[](soundex_hash(key));
+    }
+
+    void insert(const std::string& key)
+    {
+        this->operator[](key).push_back(key);
+    }
+};
+
+void to_json(nlohmann::json& j, const soundex_map& map)
+{
+    for (const auto& [hash, name] : map) {
+        j[hash_to_string(hash)] = name;
+    }
+}
+} // namespace
+
 int main(int argc, char* argv[])
 {
     CLI::App app("Soundex Groupby Utility");
@@ -46,11 +68,10 @@ int main(int argc, char* argv[])
 
     std::vector<std::string> names = doc.GetColumn<std::string>(0);
 
-    auto HashCompare = [](const std::string& lhs, const std::string& rhs) { return string_to_hash(lhs) < string_to_hash(rhs); };
-    std::map<std::string, std::vector<std::string>, decltype(HashCompare)> hash_map(HashCompare);
+    soundex_map hash_map;
 
     try {
-        std::for_each(names.begin(), names.end(), [&hash_map](const std::string& name) { hash_map[hash_to_string(soundex_hash(name))].push_back(name); });
+        std::for_each(names.begin(), names.end(), [&hash_map](const std::string& name) { hash_map.insert(name); });
     } catch (const std::runtime_error& e) {
         std::clog << e.what();
     }

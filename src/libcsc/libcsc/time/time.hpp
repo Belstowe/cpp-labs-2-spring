@@ -1,22 +1,21 @@
 #pragma once
 
-#include <algorithm>
 #include <iomanip>
 #include <iostream>
 
 namespace libcsc::time {
 class TimeBase {
 protected:
-    unsigned long long sec;
+    unsigned long long sec_;
 
-    TimeBase(const unsigned long long sec = 0) : sec{sec}
+    TimeBase(const unsigned long long sec = 0) : sec_{sec}
     {
     }
 
 public:
     operator unsigned long long() const
     {
-        return sec;
+        return sec_;
     }
 
     friend std::ostream& operator<<(std::ostream& os, const TimeBase& time)
@@ -35,14 +34,18 @@ public:
     {
     }
 
-    TimeSpan(const unsigned long long days, const unsigned long long hours, const unsigned long long minutes, const unsigned long long seconds)
+    TimeSpan(
+            const unsigned long long days,
+            const unsigned long long hours,
+            const unsigned long long minutes,
+            const unsigned long long seconds)
         : TimeBase{((days * 24 + hours) * 60 + minutes) * 60 + seconds}
     {
     }
 
     TimeSpan& operator+=(const TimeSpan& rhs)
     {
-        sec += rhs;
+        sec_ += rhs;
         return *this;
     }
 
@@ -54,7 +57,7 @@ public:
 
     TimeSpan& operator-=(const TimeSpan& rhs)
     {
-        sec -= rhs;
+        sec_ -= rhs;
         return *this;
     }
 
@@ -73,7 +76,7 @@ public:
 
     Time& operator+=(const TimeSpan& rhs)
     {
-        sec += rhs;
+        sec_ += rhs;
         return *this;
     }
 
@@ -85,7 +88,7 @@ public:
 
     Time& operator-=(const TimeSpan& rhs)
     {
-        sec -= std::min((unsigned long long)(rhs), sec);
+        sec_ -= std::min((unsigned long long)(rhs), sec_);
         return *this;
     }
 
