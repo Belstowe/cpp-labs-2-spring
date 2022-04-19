@@ -30,16 +30,28 @@ void delete_chars(
     str.erase(new_end, end);
 }
 
-void replace_chars(
-        std::string::iterator begin,
-        const std::string::iterator& end,
-        const std::unordered_map<char, char>& replace_map)
+char consonant_to_digit(char c)
 {
-    for (; begin != end; begin++) {
-        if (replace_map.find(*begin) != replace_map.cend()) {
-            *begin = replace_map.at(*begin);
-        }
+    if ((c == 'b') || (c == 'f') || (c == 'p') || (c == 'v')) {
+        return '1';
     }
+    if ((c == 'c') || (c == 'g') || (c == 'j') || (c == 'k') || (c == 'q') || (c == 's') || (c == 'x') || (c == 'z')) {
+        return '2';
+    }
+    if ((c == 'd') || (c == 't')) {
+        return '3';
+    }
+    if (c == 'l') {
+        return '4';
+    }
+    if ((c == 'm') || (c == 'n')) {
+        return '5';
+    }
+    if (c == 'r') {
+        return '6';
+    }
+
+    return c;
 }
 
 void clear_adjacent_numbers(std::string& str, const std::string::iterator& begin, const std::string::iterator& end)
@@ -47,18 +59,6 @@ void clear_adjacent_numbers(std::string& str, const std::string::iterator& begin
     auto new_end
             = std::unique(begin, end, [](const char c1, const char c2) { return (c1 == c2) && (std::isdigit(c1)); });
     str.erase(new_end, end);
-}
-
-const std::unordered_map<char, char>
-reverse_map(std::initializer_list<std::pair<char, std::initializer_list<char>>>&& map_to_reverse)
-{
-    std::unordered_map<char, char> result_map;
-    for (const auto& [key, value_list] : map_to_reverse) {
-        for (auto&& value : value_list) {
-            result_map[value] = key;
-        }
-    }
-    return result_map;
 }
 
 uint32_t soundex_hash(const std::string_view str)
@@ -82,14 +82,7 @@ uint32_t soundex_hash(const std::string_view str)
 
     delete_chars(hashbase, std::next(hashbase.begin()), hashbase.end(), {'h', 'w'});
 
-    const std::unordered_map<char, char> values_to_key_map = reverse_map(
-            {{'1', {'b', 'f', 'p', 'v'}},
-             {'2', {'c', 'g', 'j', 'k', 'q', 's', 'x', 'z'}},
-             {'3', {'d', 't'}},
-             {'4', {'l'}},
-             {'5', {'m', 'n'}},
-             {'6', {'r'}}});
-    replace_chars(hashbase.begin(), hashbase.end(), values_to_key_map);
+    std::for_each(hashbase.begin(), hashbase.end(), [](char& c) { c = consonant_to_digit(c); });
 
     clear_adjacent_numbers(hashbase, hashbase.begin(), hashbase.end());
 
